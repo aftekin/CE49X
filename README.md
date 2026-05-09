@@ -57,7 +57,8 @@ Upon successful completion of this course, students will be able to:
 | 6 | **Machine Learning Introduction** — Supervised learning, model evaluation | `Week06_Machine_Learning_Introduction/` |
 | 7 | **Naive Bayes** — Probabilistic classification, text classification | `Week07_Naive_Bayes/` |
 | 8 | **Support Vector Machines** — SVM classification, kernel methods | `Week08_Support_Vector_Machines/` |
-| 9-12 | **Final Project** — Group data science project with civil engineering focus (max 3 members, topics TBD) | |
+| 9 | **Decision Trees & Random Forests** — Tree-based classification, ensemble methods, and feature importance | `Week09_Decision_Trees_and_Random_Forests/` |
+| 10-12 | **Final Project** — Group data science project with civil engineering focus (max 3 members, topics TBD) | |
 
 ## Homework Policy
 
