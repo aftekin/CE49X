@@ -1,0 +1,10 @@
+pandas
+requests
+pycountry
+geopandas
+folium
+python-docx
+matplotlib
+fiona
+pyproj
+rtree

@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_a688da66309a0a63753daac35879928b {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+</head>
+<body>
+    
+    
+            <div class="folium-map" id="map_a688da66309a0a63753daac35879928b" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_a688da66309a0a63753daac35879928b = L.map(
+                "map_a688da66309a0a63753daac35879928b",
+                {
+                    center: [26.45625, 49.83125],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 3,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_a4853a554921af794cca2f40ff4e61af = L.tileLayer(
+                "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 20,
+  "maxNativeZoom": 20,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors \u0026copy; \u003ca href=\"https://carto.com/attributions\"\u003eCARTO\u003c/a\u003e",
+  "subdomains": "abcd",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_a4853a554921af794cca2f40ff4e61af.addTo(map_a688da66309a0a63753daac35879928b);
+        
+    
+            var rectangle_f91ac11d4213fda37fc12a798e37392c = L.rectangle(
+                [[35.8, 25.7], [42.2, 45.1]],
+                {"bubblingMouseEvents": true, "color": "#1f77b4", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f77b4", "fillOpacity": 0.12, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_a688da66309a0a63753daac35879928b);
+        
+    
+            rectangle_f91ac11d4213fda37fc12a798e37392c.bindTooltip(
+                `<div>
+                     Turkey | country
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var rectangle_bf7ec1a1824fea924b2f7087374946e2 = L.rectangle(
+                [[44.0, 22.0], [52.5, 40.0]],
+                {"bubblingMouseEvents": true, "color": "#1f77b4", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f77b4", "fillOpacity": 0.12, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_a688da66309a0a63753daac35879928b);
+        
+    
+            rectangle_bf7ec1a1824fea924b2f7087374946e2.bindTooltip(
+                `<div>
+                     Ukraine | country
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var rectangle_1a6fd81f68f61b6c0f98b77984a1eb56 = L.rectangle(
+                [[25.0, 44.0], [39.9, 63.5]],
+                {"bubblingMouseEvents": true, "color": "#1f77b4", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f77b4", "fillOpacity": 0.12, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_a688da66309a0a63753daac35879928b);
+        
+    
+            rectangle_1a6fd81f68f61b6c0f98b77984a1eb56.bindTooltip(
+                `<div>
+                     Iran | country
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var rectangle_9f0d8029636f64a534adec91d6f76246 = L.rectangle(
+                [[24.4, 50.6], [26.2, 51.7]],
+                {"bubblingMouseEvents": true, "color": "#1f77b4", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f77b4", "fillOpacity": 0.12, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_a688da66309a0a63753daac35879928b);
+        
+    
+            rectangle_9f0d8029636f64a534adec91d6f76246.bindTooltip(
+                `<div>
+                     Qatar | country
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var rectangle_8a0828f828a681b84da544b37dbbecde = L.rectangle(
+                [[22.5, 51.5], [26.5, 56.6]],
+                {"bubblingMouseEvents": true, "color": "#1f77b4", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f77b4", "fillOpacity": 0.12, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_a688da66309a0a63753daac35879928b);
+        
+    
+            rectangle_8a0828f828a681b84da544b37dbbecde.bindTooltip(
+                `<div>
+                     United Arab Emirates | country
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var rectangle_bdf96f816373fcc1807ecda5c89d14e2 = L.rectangle(
+                [[16.3, 34.4], [32.2, 55.7]],
+                {"bubblingMouseEvents": true, "color": "#1f77b4", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f77b4", "fillOpacity": 0.12, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_a688da66309a0a63753daac35879928b);
+        
+    
+            rectangle_bdf96f816373fcc1807ecda5c89d14e2.bindTooltip(
+                `<div>
+                     Saudi Arabia | country
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var rectangle_59993866bb5521848d715ddadef2e1c4 = L.rectangle(
+                [[12.0, 42.5], [19.0, 54.6]],
+                {"bubblingMouseEvents": true, "color": "#1f77b4", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f77b4", "fillOpacity": 0.12, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_a688da66309a0a63753daac35879928b);
+        
+    
+            rectangle_59993866bb5521848d715ddadef2e1c4.bindTooltip(
+                `<div>
+                     Yemen | country
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var rectangle_2049aeb0ab5424d688ff6c911d85711c = L.rectangle(
+                [[29.4, 34.2], [33.4, 35.9]],
+                {"bubblingMouseEvents": true, "color": "#1f77b4", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f77b4", "fillOpacity": 0.12, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_a688da66309a0a63753daac35879928b);
+        
+    
+            rectangle_2049aeb0ab5424d688ff6c911d85711c.bindTooltip(
+                `<div>
+                     Israel | country
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var rectangle_197bb98680a4a2c0f21399b20042f8cb = L.rectangle(
+                [[33.0, 35.1], [34.7, 36.7]],
+                {"bubblingMouseEvents": true, "color": "#1f77b4", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f77b4", "fillOpacity": 0.12, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_a688da66309a0a63753daac35879928b);
+        
+    
+            rectangle_197bb98680a4a2c0f21399b20042f8cb.bindTooltip(
+                `<div>
+                     Lebanon | country
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var rectangle_bffd926cc235bc3a22f734e7a57252ac = L.rectangle(
+                [[32.0, 35.7], [37.4, 42.5]],
+                {"bubblingMouseEvents": true, "color": "#1f77b4", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f77b4", "fillOpacity": 0.12, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_a688da66309a0a63753daac35879928b);
+        
+    
+            rectangle_bffd926cc235bc3a22f734e7a57252ac.bindTooltip(
+                `<div>
+                     Syria | country
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var rectangle_87e69e7542f1fe2e0ce0c187e59172cb = L.rectangle(
+                [[29.0, 38.8], [37.4, 49.5]],
+                {"bubblingMouseEvents": true, "color": "#1f77b4", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f77b4", "fillOpacity": 0.12, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_a688da66309a0a63753daac35879928b);
+        
+    
+            rectangle_87e69e7542f1fe2e0ce0c187e59172cb.bindTooltip(
+                `<div>
+                     Iraq | country
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var rectangle_922f0010701d54bd40aa9e56c6443ce9 = L.rectangle(
+                [[29.0, 34.9], [33.5, 39.4]],
+                {"bubblingMouseEvents": true, "color": "#1f77b4", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f77b4", "fillOpacity": 0.12, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_a688da66309a0a63753daac35879928b);
+        
+    
+            rectangle_922f0010701d54bd40aa9e56c6443ce9.bindTooltip(
+                `<div>
+                     Jordan | country
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var rectangle_abb12f6a78a3c5eb9b289870554398d0 = L.rectangle(
+                [[28.4, 46.5], [30.1, 48.5]],
+                {"bubblingMouseEvents": true, "color": "#1f77b4", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f77b4", "fillOpacity": 0.12, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_a688da66309a0a63753daac35879928b);
+        
+    
+            rectangle_abb12f6a78a3c5eb9b289870554398d0.bindTooltip(
+                `<div>
+                     Kuwait | country
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var rectangle_4cd441b36cb4fe8412349271a8468d12 = L.rectangle(
+                [[25.3, 50.3], [26.5, 50.9]],
+                {"bubblingMouseEvents": true, "color": "#1f77b4", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f77b4", "fillOpacity": 0.12, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_a688da66309a0a63753daac35879928b);
+        
+    
+            rectangle_4cd441b36cb4fe8412349271a8468d12.bindTooltip(
+                `<div>
+                     Bahrain | country
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var rectangle_80262208c6b097fc46b40e2c58bd32f9 = L.rectangle(
+                [[16.5, 51.9], [26.5, 59.9]],
+                {"bubblingMouseEvents": true, "color": "#1f77b4", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f77b4", "fillOpacity": 0.12, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_a688da66309a0a63753daac35879928b);
+        
+    
+            rectangle_80262208c6b097fc46b40e2c58bd32f9.bindTooltip(
+                `<div>
+                     Oman | country
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var rectangle_381e7b1849c858ee5781aafed7d2b476 = L.rectangle(
+                [[-44.0, 112.0], [-10.0, 154.0]],
+                {"bubblingMouseEvents": true, "color": "#1f77b4", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f77b4", "fillOpacity": 0.12, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_a688da66309a0a63753daac35879928b);
+        
+    
+            rectangle_381e7b1849c858ee5781aafed7d2b476.bindTooltip(
+                `<div>
+                     Australia | country
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            tile_layer_a4853a554921af794cca2f40ff4e61af.addTo(map_a688da66309a0a63753daac35879928b);
+        
+</script>
+</html>

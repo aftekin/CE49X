@@ -1,3 +1,20 @@
+# FIRMS UAE Final Project
+
+This repository contains code and notebooks to download FIRMS active-fire data, load the UAE administrative boundary shapefiles, and produce static and interactive maps.
+
+Quick start
+
+1. Create a Python environment and install dependencies:
+
+```bash
+python -m venv .venv
+source .venv/bin/activate  # or .venv\Scripts\activate on Windows
+pip install -r requirements.txt
+```
+
+2. Open `Final Project/Codes.ipynb` and run the cells. Fill `MAP_KEY`, `START_DATE`, `END_DATE` in the notebook or provide them interactively.
+
+3. Outputs will be saved under `outputs/` and `data/processed/`.
 # CE 49X: Introduction to Computational Thinking and Data Science for Civil Engineers
 
 **Spring 2026**

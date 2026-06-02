@@ -1,0 +1,169 @@
+{
+  "crs": "EPSG:4326",
+  "bbox_order": ["west", "south", "east", "north"],
+  "source": "Approximate rectangular extents compiled from project notes and general country extents for FIRMS filtering.",
+  "entries": [
+    {
+      "type": "country",
+      "name": "Turkey",
+      "bbox": [25.7, 35.8, 45.1, 42.2],
+      "notes": "Used for Bursa, Antalya, Izmir, and broader Turkey filtering."
+    },
+    {
+      "type": "city",
+      "name": "Bursa",
+      "bbox": [28.45, 40.00, 30.00, 40.55],
+      "notes": "City rectangle for Bursa wildfire references."
+    },
+    {
+      "type": "city",
+      "name": "Antalya",
+      "bbox": [29.80, 36.55, 31.25, 37.15],
+      "notes": "City rectangle for Antalya wildfire references."
+    },
+    {
+      "type": "city",
+      "name": "Izmir",
+      "bbox": [26.95, 38.10, 27.65, 38.75],
+      "notes": "City rectangle for Izmir wildfire references."
+    },
+    {
+      "type": "country",
+      "name": "Ukraine",
+      "bbox": [22.0, 44.0, 40.0, 52.5],
+      "notes": "Used for the Ukraine war-related news matching."
+    },
+    {
+      "type": "region",
+      "name": "Western Russia",
+      "bbox": [27.0, 41.0, 61.0, 56.0],
+      "notes": "Used with the Black Sea Basin region from your notes."
+    },
+    {
+      "type": "region",
+      "name": "Black Sea Basin",
+      "bbox": [27.0, 40.0, 46.5, 47.5],
+      "notes": "Covers Ukraine, western Russia, and the Black Sea war zone area from your notes."
+    },
+    {
+      "type": "country",
+      "name": "Iran",
+      "bbox": [44.0, 25.0, 63.5, 39.9],
+      "notes": "Included because your notes mention Iran war and related events."
+    },
+    {
+      "type": "country",
+      "name": "Qatar",
+      "bbox": [50.6, 24.4, 51.7, 26.2],
+      "notes": "Included because your notes mention Qatar explicitly."
+    },
+    {
+      "type": "country",
+      "name": "United Arab Emirates",
+      "bbox": [51.5, 22.5, 56.6, 26.5],
+      "notes": "Primary CE49X region if you later want a UAE-only version."
+    },
+    {
+      "type": "country",
+      "name": "Saudi Arabia",
+      "bbox": [34.4, 16.3, 55.7, 32.2],
+      "notes": "Included because the notes mention western Saudi Arabia."
+    },
+    {
+      "type": "country",
+      "name": "Yemen",
+      "bbox": [42.5, 12.0, 54.6, 19.0],
+      "notes": "Used for the Red Sea and Gulf of Aden region."
+    },
+    {
+      "type": "country",
+      "name": "Israel",
+      "bbox": [34.2, 29.4, 35.9, 33.4],
+      "notes": "Included for the Eastern Mediterranean / Levant region."
+    },
+    {
+      "type": "country",
+      "name": "Lebanon",
+      "bbox": [35.1, 33.0, 36.7, 34.7],
+      "notes": "Included for the Eastern Mediterranean / Levant region."
+    },
+    {
+      "type": "country",
+      "name": "Syria",
+      "bbox": [35.7, 32.0, 42.5, 37.4],
+      "notes": "Included for the Eastern Mediterranean / Levant region."
+    },
+    {
+      "type": "country",
+      "name": "Iraq",
+      "bbox": [38.8, 29.0, 49.5, 37.4],
+      "notes": "Included because it appears in the notes list of regional countries."
+    },
+    {
+      "type": "country",
+      "name": "Jordan",
+      "bbox": [34.9, 29.0, 39.4, 33.5],
+      "notes": "Included for the Eastern Mediterranean / Levant region."
+    },
+    {
+      "type": "country",
+      "name": "Kuwait",
+      "bbox": [46.5, 28.4, 48.5, 30.1],
+      "notes": "Included because it is mentioned in the notes table."
+    },
+    {
+      "type": "country",
+      "name": "Bahrain",
+      "bbox": [50.3, 25.3, 50.9, 26.5],
+      "notes": "Included because it is mentioned in the notes table."
+    },
+    {
+      "type": "country",
+      "name": "Oman",
+      "bbox": [51.9, 16.5, 59.9, 26.5],
+      "notes": "Included because it is mentioned in the notes table."
+    },
+    {
+      "type": "region",
+      "name": "Eastern Mediterranean / Levant",
+      "bbox": [33.0, 28.0, 43.5, 37.8],
+      "notes": "Covers Israel, Lebanon, Syria, Jordan, and surrounding areas."
+    },
+    {
+      "type": "region",
+      "name": "Red Sea Region",
+      "bbox": [32.0, 12.0, 44.0, 28.5],
+      "notes": "Broad Red Sea corridor covering Yemen and western Saudi Arabia. Polygon narrows the shape into a slanted corridor."
+    },
+    {
+      "type": "region",
+      "name": "Bab el-Mandeb",
+      "bbox": [42.0, 11.0, 44.8, 14.8],
+      "notes": "Important maritime chokepoint between the Red Sea and Gulf of Aden. Polygon narrows the chokepoint."
+    },
+    {
+      "type": "region",
+      "name": "Strait of Hormuz",
+      "bbox": [54.0, 24.0, 57.7, 27.5],
+      "notes": "Important maritime chokepoint between Iran and Oman/UAE. Polygon narrows the channel."
+    },
+    {
+      "type": "region",
+      "name": "Persian Gulf",
+      "bbox": [47.0, 23.0, 57.8, 31.8],
+      "notes": "Useful for Qatar, Bahrain, Kuwait, UAE, and eastern Saudi Arabia. Polygon narrows the gulf shape."
+    },
+    {
+      "type": "country",
+      "name": "Australia",
+      "bbox": [112.0, -44.0, 154.0, -10.0],
+      "notes": "Broad Australia extent; tighten later to specific states if needed."
+    },
+    {
+      "type": "region",
+      "name": "Texas Permian Basin",
+      "bbox": [-104.5, 29.0, -100.5, 34.0],
+      "notes": "Included because the notes mention Texas Permian Basin."
+    }
+  ]
+}

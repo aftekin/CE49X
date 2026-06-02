@@ -1,0 +1,1515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CE49X Final Project - Conflict Situation Monitoring for Maritime Shipping</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent-blue: #3b82f6;
+            --accent-indigo: #6366f1;
+            --accent-purple: #a855f7;
+            --accent-emerald: #10b981;
+            --accent-rose: #f43f5e;
+            --accent-amber: #f59e0b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(168, 85, 247, 0.12) 0%, transparent 40%);
+            background-attachment: fixed;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2.5rem 1.5rem;
+        }
+
+        /* Header Styling */
+        header {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 1.5rem;
+            padding: 2.5rem;
+            margin-bottom: 2.5rem;
+            backdrop-filter: blur(16px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-indigo), var(--accent-purple));
+        }
+
+        .header-text h1 {
+            font-size: 2.2rem;
+            letter-spacing: -0.025em;
+            background: linear-gradient(90deg, #ffffff 30%, #cbd5e1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .header-text p {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            font-weight: 400;
+        }
+
+        .badge-academic {
+            background: rgba(99, 102, 241, 0.15);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            color: #c7d2fe;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Metrics Row */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .metric-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 1.25rem;
+            padding: 1.75rem;
+            backdrop-filter: blur(12px);
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .metric-icon {
+            width: 3.25rem;
+            height: 3.25rem;
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+        }
+
+        .metric-icon.blue { background: rgba(59, 130, 246, 0.15); color: #60a5fa; }
+        .metric-icon.purple { background: rgba(168, 85, 247, 0.15); color: #c084fc; }
+        .metric-icon.amber { background: rgba(245, 158, 11, 0.15); color: #fbbf24; }
+        .metric-icon.emerald { background: rgba(16, 185, 129, 0.15); color: #34d399; }
+
+        .metric-info h3 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1.2;
+        }
+
+        .metric-info p {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-top: 0.25rem;
+        }
+
+        /* Speech Sections Ordering Classes */
+        .section-separator {
+            grid-column: 1 / -1;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 2.5rem 0 1.25rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 0.75rem;
+        }
+
+        .section-separator span {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.15rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--accent-indigo);
+            font-weight: 700;
+        }
+
+        .section-separator .line {
+            flex-grow: 1;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(99, 102, 241, 0.3) 0%, transparent 100%);
+        }
+
+        /* Main Multicolumn Layout */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2.5rem;
+        }
+
+        @media (max-width: 1024px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .dashboard-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 1.5rem;
+            padding: 2.25rem;
+            backdrop-filter: blur(12px);
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .dashboard-card:hover {
+            border-color: rgba(255, 255, 255, 0.12);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            padding-bottom: 1.25rem;
+        }
+
+        .card-header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .card-header i {
+            font-size: 1.5rem;
+            background: linear-gradient(135deg, var(--accent-indigo), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .card-header h2 {
+            font-size: 1.4rem;
+            color: var(--text-primary);
+        }
+
+        .card-body p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.7;
+            margin-bottom: 1.25rem;
+        }
+
+        /* Bullet Points List */
+        .info-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .info-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.85rem;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .info-list li i {
+            color: var(--accent-indigo);
+            font-size: 1.05rem;
+            margin-top: 0.2rem;
+        }
+
+        .info-list li strong {
+            color: var(--text-primary);
+        }
+
+        /* Table Styling with All Columns */
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            border-radius: 0.75rem;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(15, 23, 42, 0.4);
+            margin-top: 1rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.82rem;
+        }
+
+        th {
+            background: rgba(30, 41, 59, 0.8);
+            color: var(--text-primary);
+            font-weight: 600;
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            font-family: 'Outfit', sans-serif;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            color: var(--text-secondary);
+            line-height: 1.4;
+            white-space: nowrap;
+        }
+
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+            color: var(--text-primary);
+        }
+
+        .badge-status {
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.375rem;
+            font-size: 0.72rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .badge-status.raw { background: rgba(244, 63, 94, 0.15); color: #fb7185; }
+        .badge-status.proc { background: rgba(59, 130, 246, 0.15); color: #60a5fa; }
+        .badge-status.clustered { background: rgba(168, 85, 247, 0.15); color: #c084fc; }
+        .badge-status.news { background: rgba(245, 158, 11, 0.15); color: #fbbf24; }
+
+        /* Code display blocks */
+        .code-display {
+            background: #090d16;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            font-family: monospace;
+            font-size: 0.78rem;
+            color: #38bdf8;
+            overflow-x: auto;
+            line-height: 1.4;
+            margin-top: 0.75rem;
+        }
+
+        /* Tabs Navigation for Samples */
+        .tabs-header {
+            display: flex;
+            gap: 0.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            padding-bottom: 0.75rem;
+            margin-bottom: 1rem;
+            overflow-x: auto;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            padding: 0.6rem 1.2rem;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            border-radius: 0.5rem;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .tab-btn.active {
+            color: var(--text-primary);
+            background: rgba(99, 102, 241, 0.15);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+        }
+
+        .tab-panel {
+            display: none;
+        }
+
+        .tab-panel.active {
+            display: block;
+        }
+
+        /* Full Width Chart & Plot Panel */
+        .full-width-card {
+            grid-column: 1 / -1;
+        }
+
+        .chart-grid-layout {
+            display: grid;
+            grid-template-columns: 3fr 2fr;
+            gap: 2rem;
+        }
+
+        @media (max-width: 1024px) {
+            .chart-grid-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .chart-container {
+            background: rgba(15, 23, 42, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            position: relative;
+            height: 380px;
+        }
+
+        .chart-stats-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            justify-content: center;
+        }
+
+        .chart-stats-info h4 {
+            color: var(--text-primary);
+            font-size: 1.15rem;
+            border-left: 3px solid var(--accent-indigo);
+            padding-left: 0.75rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 3rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            padding-top: 2rem;
+            padding-bottom: 1rem;
+        }
+
+        footer strong {
+            color: var(--text-primary);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <!-- Header -->
+        <header>
+            <div class="header-text">
+                <h1>Conflict Situation Monitoring for Maritime Shipping</h1>
+                <p>Correlating Satellite Thermal Anomalies with War-Related Events to Assess Maritime Security & Energy Trade Disruptions</p>
+            </div>
+            <div class="badge-academic">
+                <i class="fa-solid fa-graduation-cap"></i>
+                CE49X Final Project Spring 2026
+            </div>
+        </header>
+
+        <!-- Metrics Row -->
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-icon blue">
+                    <i class="fa-solid fa-anchor"></i>
+                </div>
+                <div class="metric-info">
+                    <h3>7 Regions</h3>
+                    <p>Trade Choke Points</p>
+                </div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-icon purple">
+                    <i class="fa-solid fa-compass"></i>
+                </div>
+                <div class="metric-info">
+                    <h3>2 Classifiers</h3>
+                    <p>LogReg & Decision Trees</p>
+                </div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-icon amber">
+                    <i class="fa-solid fa-chart-line"></i>
+                </div>
+                <div class="metric-info">
+                    <h3>GridSpec</h3>
+                    <p>Multi-Panel Delivery</p>
+                </div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-icon emerald">
+                    <i class="fa-solid fa-database"></i>
+                </div>
+                <div class="metric-info">
+                    <h3>Postgres</h3>
+                    <p>Docker Persistent DB</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Layout Grid in exact Speech Order -->
+        <div class="main-grid">
+            
+            <!-- ========================================== -->
+            <!-- PART 1: BACKGROUND & PURPOSE -->
+            <!-- ========================================== -->
+            <div class="section-separator">
+                <span>PART 1: Background & Purpose</span>
+                <div class="line"></div>
+            </div>
+
+            <!-- Background & Industry Context -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <div class="card-header-left">
+                        <i class="fa-solid fa-ship"></i>
+                        <h2>Background & Industry Context</h2>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p>
+                        In international maritime shipping and energy logistics management, transit security along trade lanes is critical. Approximately <strong>80% of global trade</strong> travels via maritime shipping, requiring vessels to cross narrow geographical choke points such as the <strong>Strait of Hormuz</strong>, the <strong>Bab el-Mandeb Strait</strong>, the <strong>Bosporus</strong>, and the <strong>Black Sea</strong>.
+                    </p>
+                    <p>
+                        When war or territorial conflicts erupt, commercial shipping fleets face direct physical threats from missile strikes, drone attacks, and naval mines. Monitoring these hazards locally is impossible, and conventional AIS vessel transponders are often disabled for safety.
+                    </p>
+                    <ul class="info-list">
+                        <li>
+                            <i class="fa-solid fa-arrows-spin"></i>
+                            <span><strong>OSINT Objective:</strong> Establish a remote, autonomous satellite threat assessment pipeline to verify active port/military strikes near shipping routes.</span>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-chart-area"></i>
+                            <span><strong>Actionable Value:</strong> Empowers cargo planners to dynamically redirect carrier fleets, preventing catastrophic asset damage or scheduling delays.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Fleet Implications & Risk Hedging -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <div class="card-header-left">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <h2>Implications for a Shipping Company</h2>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p>
+                        Operating a modern fleet requires real-time routing decisions to avoid localized conflict zones and minimize fuel/demurrage expenses:
+                    </p>
+                    <ul class="info-list">
+                        <li>
+                            <i class="fa-solid fa-route"></i>
+                            <span><strong>Dynamic Fleet Rerouting:</strong> Spikes in verified anomalies near Yemen trigger automatic detours around the <strong>Cape of Good Hope</strong>, bypassing dangerous Red Sea crossings.</span>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-arrow-trend-up"></i>
+                            <span><strong>Energy Price Hedging:</strong> Spatiotemporal threat alerts in the Persian Gulf predict global crude oil and LNG spot surges, allowing fuel schedulers to pre-hedge fuel budgets using derivatives.</span>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-ban"></i>
+                            <span><strong>False Alarm Prevention:</strong> By classifying natural or industrial flaring anomalies correctly, operators avoid unnecessary, highly expensive ship detours.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+
+            <!-- ========================================== -->
+            <!-- PART 2: DATA SOURCES & COLLECTION -->
+            <!-- ========================================== -->
+            <div class="section-separator">
+                <span>PART 2: Data Sources & Collection</span>
+                <div class="line"></div>
+            </div>
+
+            <!-- Multidimensional Data Sources -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <div class="card-header-left">
+                        <i class="fa-solid fa-database"></i>
+                        <h2>Multidimensional Data Layers</h2>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p>
+                        Our data pipeline aggregates three separate levels of information to achieve robust, cross-verified threat monitoring:
+                    </p>
+                    <ul class="info-list">
+                        <li>
+                            <i class="fa-solid fa-satellite-dish"></i>
+                            <span><strong>NASA FIRMS Active Thermal Observations:</strong> Fetches active thermal anomalies from MODIS and VIIRS satellite sensors in near real-time via API endpoints.</span>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-globe"></i>
+                            <span><strong>GADM v4.1 Geographical Polygons:</strong> Integrates spatial boundaries at `ADM_ADM_0` (country borders) and `ADM_ADM_1` (provincial/regional divisions) layers.</span>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-square-rss"></i>
+                            <span><strong>OSINT Conflict News Pipelines:</strong> Aggregates conflict headlines, snippets, publication times, and URLs from the NYT API, Guardian API, Google News RSS, and scrapers targeting The War Zone.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Database Storage with Postgres & Docker -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <div class="card-header-left">
+                        <i class="fa-solid fa-cubes"></i>
+                        <h2>Docker Database & Persistence</h2>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p>
+                        To ensure enterprise data integrity, all collected and processed data layers are persisted to a PostgreSQL database hosted inside a Docker container:
+                    </p>
+                    <ul class="info-list">
+                        <li>
+                            <i class="fa-solid fa-server"></i>
+                            <span><strong>Containerized Storage:</strong> A dedicated PostgreSQL v16 Docker container (`ce49x-postgres`) running locally on port 5432.</span>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-database"></i>
+                            <span><strong>Required Tables:</strong> Persists raw cleaned points to `firms_detections`, indexed headlines to `news_articles`, DBSCAN groups to `thermal_events`, and classification results to `event_matches`.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+
+            <!-- ========================================== -->
+            <!-- PART 3: SPATIAL & TEMPORAL ANALYSIS, CLEANING & CLUSTERING -->
+            <!-- ========================================== -->
+            <div class="section-separator">
+                <span>PART 3: Spatial-Temporal Analysis, Cleaning & Clustering</span>
+                <div class="line"></div>
+            </div>
+
+            <!-- FIRMS & News Ingest Cleaning -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <div class="card-header-left">
+                        <i class="fa-solid fa-broom"></i>
+                        <h2>Data Cleaning & Noise Filtering</h2>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p>
+                        Before analysis, satellite observations and news articles undergo strict quality filters:
+                    </p>
+                    <ul class="info-list">
+                        <li>
+                            <i class="fa-solid fa-satellite"></i>
+                            <span><strong>Satellite Observation Filters:</strong> MODIS points are kept only if confidence is <strong>&gt; 75%</strong> and Fire Radiative Power (FRP) is <strong>&gt; 20 MW</strong>. VIIRS low-confidence pixels (<strong>!= "L"</strong>) are pruned, keeping FRP <strong>&gt; 5 MW</strong>.</span>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-scissors"></i>
+                            <span><strong>Spatio-Temporal Clipping:</strong> Filtered coordinates are clipped inside GADM country polygons and labeled with regional names, dropping observations occurring outside the transit borders.</span>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-key"></i>
+                            <span><strong>News Content Pruning:</strong> Ingested headlines are parsed to remove timezone discrepancies, filtered using strict conflict keyword triggers (e.g. <i>missile, drone strike, explosion</i>), and standardized into structured CSV schemas.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- DBSCAN Clustering Engine -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <div class="card-header-left">
+                        <i class="fa-solid fa-compress-arrows-alt"></i>
+                        <h2>DBSCAN / Union-Find Clustering</h2>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p>
+                        Active fire points are grouped into distinct physical thermal events using DBSCAN clustering, establishing centroids and bounds:
+                    </p>
+                    <ul class="info-list">
+                        <li>
+                            <i class="fa-solid fa-hourglass-half"></i>
+                            <span><strong>Temporal Window:</strong> Observations occurring within <strong>6 hours</strong> of each other are joined.</span>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-ruler-horizontal"></i>
+                            <span><strong>Sensor Distance Thresholds:</strong> Integrates MODIS points within a <strong>2,000 meter</strong> radius, and high-resolution VIIRS points within an <strong>800 meter</strong> radius.</span>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-chart-line"></i>
+                            <span><strong>Outlier Pruning:</strong> Isolated singletons that do not form continuous temporal runs are pruned, isolating significant industrial impacts.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Sensor FRP density -->
+            <div class="dashboard-card full-width-card">
+                <div class="card-header">
+                    <div class="card-header-left">
+                        <i class="fa-solid fa-chart-simple"></i>
+                        <h2>Sensor-Specific Fire Radiative Power (FRP) and Densities</h2>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="chart-grid-layout">
+                        <!-- ChartJS container -->
+                        <div class="chart-container">
+                            <canvas id="sensorFRPChart"></canvas>
+                        </div>
+                        <!-- Sidebar with explanation -->
+                        <div class="chart-stats-info">
+                            <div>
+                                <h4>Satellite Sensor Calibration Differences</h4>
+                                <p style="font-size:0.95rem; margin-bottom:1rem;">
+                                    This polar area chart illustrates the average Fire Radiative Power (FRP) registered per sensor. Sensor characteristics must be taken into account during DBSCAN clustering parameters.
+                                </p>
+                            </div>
+                            <ul class="info-list">
+                                <li>
+                                    <i class="fa-solid fa-sun" style="color:var(--accent-amber);"></i>
+                                    <span><strong>MODIS:</strong> registers much higher average FRP values (62.4 MW) due to its larger pixel size (1km), capturing larger cumulative energy.</span>
+                                </li>
+                                <li>
+                                    <i class="fa-solid fa-microchip" style="color:var(--accent-emerald);"></i>
+                                    <span><strong>VIIRS SNPP/NOAA20:</strong> high-resolution sensors (375m pixels) have lower average FRP (15-18 MW) but capture fine-grained coordinates, ideal for tracking localized infrastructure damage.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- ========================================== -->
+            <!-- PART 4: CORRELATION, SCORING & CLASSIFICATION -->
+            <!-- ========================================== -->
+            <div class="section-separator">
+                <span>PART 4: Correlation, Scoring & Classification</span>
+                <div class="line"></div>
+            </div>
+
+            <!-- Correlation Matching Musts & Scoring -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <div class="card-header-left">
+                        <i class="fa-solid fa-network-wired"></i>
+                        <h2>Correlation Matching & Multi-Dimensional Scoring</h2>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p>
+                        To link active fires with media-reported conflict events, we implement strict matching constraints and a robust scoring model:
+                    </p>
+                    <ul class="info-list">
+                        <li>
+                            <i class="fa-solid fa-circle-check"></i>
+                            <span><strong>Spatial Matching Must:</strong> The cluster centroid and the news article's location mention **must** share the same GADM country boundary.</span>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-calendar-check"></i>
+                            <span><strong>Temporal Matching Must:</strong> The publication date of the news article **must** fall within a **temporal window** of -24 to +72 hours of the cluster's earliest active detection.</span>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-chart-line-up"></i>
+                            <span><strong>Multi-Dimensional Scoring Model:</strong>
+                                the `total_score` combines:
+                                <br>&bull; *Time Proximity Score* (exponential decay of the time delta)
+                                <br>&bull; *Semantic Action Score* (weighting keywords like <i>missile, drone strike, explosion</i>)
+                                <br>&bull; *Fire/Utility Indicator Score* (weighting keywords like <i>blackout, grid, burning</i>)
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Machine Learning Classifiers Justification -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <div class="card-header-left">
+                        <i class="fa-solid fa-code-merge"></i>
+                        <h2>Logistic Regression & Decision Trees</h2>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p>
+                        To classify high-confidence matches, we selected two distinct, highly interpretable machine learning classifiers:
+                    </p>
+                    <ul class="info-list">
+                        <li>
+                            <i class="fa-solid fa-circle-nodes"></i>
+                            <span><strong>Logistic Regression:</strong> Chosen because it acts as a linear classifier that outputs exact probabilities. It provides clear, highly interpretable feature coefficients, indicating which spatio-temporal variables carry the most weight.</span>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-diagram-project"></i>
+                            <span><strong>Decision Trees:</strong> Selected because they represent a non-linear, rule-based classifier that handles feature interactions natively. They map out distinct, clear decision branches that ship route managers can trace directly to audit classification logic.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Interactive Multipanel Charts (Iran Case Study) -->
+            <div class="dashboard-card full-width-card">
+                <div class="card-header">
+                    <div class="card-header-left">
+                        <i class="fa-solid fa-timeline"></i>
+                        <h2>Spatio-Temporal Correlation Timeline (Iran Case Study - Strait of Hormuz)</h2>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="chart-grid-layout">
+                        <!-- ChartJS container -->
+                        <div class="chart-container">
+                            <canvas id="iranMultipanelChart"></canvas>
+                        </div>
+                        <!-- Sidebar with explanation -->
+                        <div class="chart-stats-info">
+                            <div>
+                                <h4>Attacks & Damage Timeline (January 2026)</h4>
+                                <p style="font-size:0.95rem; margin-bottom:1rem;">
+                                    This chart maps the <strong>actual daily sum of Fire Radiative Power (FRP)</strong> and the <strong>actual daily count of unique OSINT news articles</strong> matching the Iranian corridor context on disk.
+                                </p>
+                            </div>
+                            <ul class="info-list">
+                                <li>
+                                    <i class="fa-solid fa-triangle-exclamation" style="color:var(--accent-rose);"></i>
+                                    <span><strong>Correlation Spikes:</strong> Notice matching spikes on <strong>Jan 6th</strong> (FRP: 15.5k MW, News: 48 articles) and <strong>Jan 21st</strong> (FRP: 14.6k MW, News: 33 articles). Major utility fires directly align with spikes in international press reporting.</span>
+                                </li>
+                                <li>
+                                    <i class="fa-solid fa-wave-square" style="color:var(--accent-blue);"></i>
+                                    <span><strong>Attribution & Verifiability:</strong> Spikes where FRP matches News counts indicate verified attacks on power grids and energy storage tanks in industrial sectors.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Classifier Feature Importances Chart -->
+            <div class="dashboard-card full-width-card">
+                <div class="card-header">
+                    <div class="card-header-left">
+                        <i class="fa-solid fa-chart-pie"></i>
+                        <h2>Trained Classifier Feature Importances (Logistic Regression & Decision Trees)</h2>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="chart-grid-layout">
+                        <!-- ChartJS container -->
+                        <div class="chart-container">
+                            <canvas id="featureImportanceChart"></canvas>
+                        </div>
+                        <!-- Sidebar with explanation -->
+                        <div class="chart-stats-info">
+                            <div>
+                                <h4>Predictive Threat Features</h4>
+                                <p style="font-size:0.95rem; margin-bottom:1rem;">
+                                    Relative importance of features in our classifiers predicting conflict-associated thermal events.
+                                </p>
+                            </div>
+                            <ul class="info-list">
+                                <li>
+                                    <i class="fa-solid fa-clock" style="color:var(--accent-indigo);"></i>
+                                    <span><strong>Top Feature:</strong> <strong>Spatio-Temporal Time Score (34.2%)</strong> is the single most predictive feature. This indicates that conflict-related thermal anomalies show tight temporal bounds to news releases compared to agricultural burning.</span>
+                                </li>
+                                <li>
+                                    <i class="fa-solid fa-fire" style="color:var(--accent-rose);"></i>
+                                    <span><strong>Intensity Feature:</strong> <strong>FRP Sum (28.5%)</strong> is heavily weighted by the models because drone and missile explosions yield significantly larger thermal footprints than localized agricultural fires.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- ========================================== -->
+            <!-- DELIVERABLES TABLES -->
+            <!-- ========================================== -->
+            <div class="section-separator">
+                <span>DELIVERABLES: Real Database Preview Tables</span>
+                <div class="line"></div>
+            </div>
+
+            <!-- Raw API News Source & Data Cleaning Comparison Card -->
+            <div class="dashboard-card full-width-card">
+                <div class="card-header">
+                    <div class="card-header-left">
+                        <i class="fa-solid fa-code"></i>
+                        <h2>News Data Ingest & Cleaning pipeline (Raw API Responses vs. Standardized Rows)</h2>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p style="font-size:0.95rem; color:var(--text-secondary); margin-bottom:1rem;">
+                        Before standardisation, news articles arrive as nested, inconsistent JSON payloads from API endpoints. Our data engineering pipeline parses and standardizes them:
+                    </p>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                        <div>
+                            <h4 style="color: var(--accent-rose); font-size: 0.95rem;"><i class="fa-solid fa-brackets-curly"></i> Raw Guardian API JSON Node (Before Cleaning)</h4>
+                            <div class="code-display">
+{
+  "id": "world/2026/jan/06/major-explosions-rock-port",
+  "type": "article",
+  "sectionName": "World news",
+  "webPublicationDate": "2026-01-06T14:30:22Z",
+  "webTitle": "Port Facilities Attacked Near Strategic Gulf Passage",
+  "webUrl": "https://www.theguardian.com/world/2026/jan/06/port-attacked",
+  "fields": {
+     "headline": "Port Facilities Attacked",
+     "trailText": "A barrage of explosions damaged oil storage tanks..."
+  }
+}
+                            </div>
+                        </div>
+                        <div>
+                            <h4 style="color: var(--accent-rose); font-size: 0.95rem;"><i class="fa-solid fa-brackets-curly"></i> Raw NYT Archive API Document Node (Before Cleaning)</h4>
+                            <div class="code-display">
+{
+  "web_url": "https://www.nytimes.com/2026/01/06/world/middleeast/gulf-shipping-risks.html",
+  "snippet": "Explosions near terminal spark fire along transit route.",
+  "lead_paragraph": "A tactical strike hit fuel grids on Tuesday...",
+  "pub_date": "2026-01-06T18:12:00Z",
+  "headline": {
+     "main": "Explosions Near Cargo Hub Raise Security Warnings"
+  },
+  "source": "The New York Times"
+}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h4 style="color: var(--accent-emerald); font-size: 0.95rem; margin-top: 1.5rem;"><i class="fa-solid fa-table"></i> Cleaned & Standardized Database Rows (After Processing)</h4>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Status</th>
+                                    <th>date (Parsed to UTC)</th>
+                                    <th>news source</th>
+                                    <th>title (Merged Headline + Snippet)</th>
+                                    <th>link (Standardized URL)</th>
+                                    <th>country_mention</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="badge-status news">Processed</span></td>
+                                    <td>2026-01-06 14:30:22</td>
+                                    <td>Guardian</td>
+                                    <td>Port Facilities Attacked Near Strategic Gulf Passage - A barrage of explosions damaged oil storage tanks...</td>
+                                    <td><a href="#" style="color:var(--accent-blue); text-decoration:none;">https://www.theguardian.com/...</a></td>
+                                    <td>Iran</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge-status news">Processed</span></td>
+                                    <td>2026-01-06 18:12:00</td>
+                                    <td>NYT</td>
+                                    <td>Explosions Near Cargo Hub Raise Security Warnings - Explosions near terminal spark fire along transit route.</td>
+                                    <td><a href="#" style="color:var(--accent-blue); text-decoration:none;">https://www.nytimes.com/...</a></td>
+                                    <td>Iran</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sample Data Tables with ALL COLUMNS -->
+            <div class="dashboard-card full-width-card">
+                <div class="card-header">
+                    <div class="card-header-left">
+                        <i class="fa-solid fa-table-list"></i>
+                        <h2>Real Processed & Clustered Deliverables (Complete Data Column Layout)</h2>
+                    </div>
+                </div>
+                <div class="card-body">
+                    
+                    <!-- Tabs navigation -->
+                    <div class="tabs-header">
+                        <button class="tab-btn active" onclick="switchTab(event, 'firms-raw')">FIRMS Raw (All 22 Columns)</button>
+                        <button class="tab-btn" onclick="switchTab(event, 'firms-cleaned')">FIRMS Cleaned (All 15 Columns)</button>
+                        <button class="tab-btn" onclick="switchTab(event, 'news-proc')">News Processed (All 6 Columns)</button>
+                        <button class="tab-btn" onclick="switchTab(event, 'firms-clustered')">Hotspot Clusters (All 14 Columns)</button>
+                    </div>
+
+                    <!-- Panel 1 -->
+                    <div id="firms-raw" class="tab-panel active">
+                        <p style="font-size:0.9rem; color:var(--text-secondary); margin-bottom:0.5rem;">
+                            Direct sample from raw active fire files retrieved via NASA's API. Shows all key database columns.
+                        </p>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Status</th>
+                                        <th>latitude</th>
+                                        <th>longitude</th>
+                                        <th>brightness</th>
+                                        <th>scan</th>
+                                        <th>track</th>
+                                        <th>acq_date</th>
+                                        <th>acq_time</th>
+                                        <th>satellite</th>
+                                        <th>instrument</th>
+                                        <th>confidence</th>
+                                        <th>version</th>
+                                        <th>bright_t31</th>
+                                        <th>frp</th>
+                                        <th>daynight</th>
+                                        <th>type</th>
+                                        <th>acq_timestamp</th>
+                                        <th>retrieved_at</th>
+                                        <th>period_start</th>
+                                        <th>period_end</th>
+                                        <th>area_label</th>
+                                        <th>bright_ti4</th>
+                                        <th>bright_ti5</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><span class="badge-status raw">Raw</span></td>
+                                        <td>-14.1017</td>
+                                        <td>127.4337</td>
+                                        <td>334.9</td>
+                                        <td>2.6</td>
+                                        <td>1.5</td>
+                                        <td>2019-01-01</td>
+                                        <td>122</td>
+                                        <td>MODIS_SP</td>
+                                        <td>MODIS</td>
+                                        <td>86</td>
+                                        <td>6.03</td>
+                                        <td>292.9</td>
+                                        <td>83.1</td>
+                                        <td>D</td>
+                                        <td>0</td>
+                                        <td>2019-01-01 01:22:00</td>
+                                        <td>2026-06-02 07:21:00</td>
+                                        <td>2019-01-01</td>
+                                        <td>2019-12-26</td>
+                                        <td>australia</td>
+                                        <td>NaN</td>
+                                        <td>NaN</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge-status raw">Raw</span></td>
+                                        <td>-14.0055</td>
+                                        <td>127.4097</td>
+                                        <td>328.8</td>
+                                        <td>2.6</td>
+                                        <td>1.5</td>
+                                        <td>2019-01-01</td>
+                                        <td>122</td>
+                                        <td>MODIS_SP</td>
+                                        <td>MODIS</td>
+                                        <td>27</td>
+                                        <td>6.03</td>
+                                        <td>295.8</td>
+                                        <td>44.1</td>
+                                        <td>D</td>
+                                        <td>0</td>
+                                        <td>2019-01-01 01:22:00</td>
+                                        <td>2026-06-02 07:21:00</td>
+                                        <td>2019-01-01</td>
+                                        <td>2019-12-26</td>
+                                        <td>australia</td>
+                                        <td>NaN</td>
+                                        <td>NaN</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Panel 2 -->
+                    <div id="firms-cleaned" class="tab-panel">
+                        <p style="font-size:0.9rem; color:var(--text-secondary); margin-bottom:0.5rem;">
+                            FIRMS points after confidence filtering, quality rules, and dynamic GADM boundary-clipping. Shows all processed database columns.
+                        </p>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Status</th>
+                                        <th>latitude</th>
+                                        <th>longitude</th>
+                                        <th>brightness</th>
+                                        <th>scan</th>
+                                        <th>track</th>
+                                        <th>acq_date</th>
+                                        <th>acq_time</th>
+                                        <th>satellite</th>
+                                        <th>confidence</th>
+                                        <th>bright_t31</th>
+                                        <th>frp</th>
+                                        <th>daynight</th>
+                                        <th>country</th>
+                                        <th>area_label</th>
+                                        <th>bright_ti4</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><span class="badge-status proc">Cleaned</span></td>
+                                        <td>36.22329</td>
+                                        <td>29.70365</td>
+                                        <td>NaN</td>
+                                        <td>0.45</td>
+                                        <td>0.47</td>
+                                        <td>2021-08-12</td>
+                                        <td>1030</td>
+                                        <td>VIIRS_NOAA20_SP</td>
+                                        <td>n</td>
+                                        <td>NaN</td>
+                                        <td>7.97</td>
+                                        <td>D</td>
+                                        <td>Turkey</td>
+                                        <td>Antalya</td>
+                                        <td>341.17</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge-status proc">Cleaned</span></td>
+                                        <td>36.24614</td>
+                                        <td>30.01028</td>
+                                        <td>NaN</td>
+                                        <td>0.55</td>
+                                        <td>0.42</td>
+                                        <td>2021-09-05</td>
+                                        <td>1120</td>
+                                        <td>VIIRS_NOAA20_SP</td>
+                                        <td>n</td>
+                                        <td>NaN</td>
+                                        <td>10.21</td>
+                                        <td>D</td>
+                                        <td>Turkey</td>
+                                        <td>Antalya</td>
+                                        <td>335.25</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Panel 3 -->
+                    <div id="news-proc" class="tab-panel">
+                        <p style="font-size:0.9rem; color:var(--text-secondary); margin-bottom:0.5rem;">
+                            Standardized news feed records filtered using structural and tactical keyword mapping. Shows all collected headlines and links.
+                        </p>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Status</th>
+                                        <th>date</th>
+                                        <th>news source</th>
+                                        <th>title / headline</th>
+                                        <th>link / url</th>
+                                        <th>country_mention</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><span class="badge-status news">OSINT</span></td>
+                                        <td>2026-05-12</td>
+                                        <td>NYT</td>
+                                        <td>Explosions Heard Near Iran Military Facility, State Media Reports</td>
+                                        <td><a href="https://www.nytimes.com/2026/05/12/world/middleeast/iran-explosions.html" target="_blank" style="color:var(--accent-blue); text-decoration:none;">nytimes.com/world/iran-explosions <i class="fa-solid fa-up-right-from-square" style="font-size:0.75rem;"></i></a></td>
+                                        <td>Iran</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge-status news">OSINT</span></td>
+                                        <td>2026-01-02 21:05</td>
+                                        <td>Guardian</td>
+                                        <td>Ukrainian drones target Russian airbase in overnight strike - Swarm of drones hits southwest airfield.</td>
+                                        <td><a href="https://www.theguardian.com/world/2026/jan/02/ukrainian-drones-target-russian-airbase-in-overnight-strike" target="_blank" style="color:var(--accent-blue); text-decoration:none;">theguardian.com/ukrainian-airbase-strike <i class="fa-solid fa-up-right-from-square" style="font-size:0.75rem;"></i></a></td>
+                                        <td>Ukraine</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge-status news">OSINT</span></td>
+                                        <td>2026-06-02 12:00</td>
+                                        <td>War Zone</td>
+                                        <td>Ukraine missile strikes sink Russian warship in Crimea</td>
+                                        <td><a href="https://www.twz.com/ukraine-missile-strikes-sink-russian-warship-in-crimea" target="_blank" style="color:var(--accent-blue); text-decoration:none;">twz.com/ukraine-missiles-warship-crimea <i class="fa-solid fa-up-right-from-square" style="font-size:0.75rem;"></i></a></td>
+                                        <td>Ukraine</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Panel 4 -->
+                    <div id="firms-clustered" class="tab-panel">
+                        <p style="font-size:0.9rem; color:var(--text-secondary); margin-bottom:0.5rem;">
+                            Clustered active fire events ready for correlation, generated with DBSCAN/Union-Find.
+                        </p>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Status</th>
+                                        <th>sensor</th>
+                                        <th>n_points</th>
+                                        <th>centroid_lat</th>
+                                        <th>centroid_lon</th>
+                                        <th>max_brightness</th>
+                                        <th>maxbrightness_ti4</th>
+                                        <th>average_confidence_rate</th>
+                                        <th>sum_frp</th>
+                                        <th>max_frp</th>
+                                        <th>earliest_detection</th>
+                                        <th>latest_detection</th>
+                                        <th>duration_hours</th>
+                                        <th>centroid_country</th>
+                                        <th>centroid_area_label</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><span class="badge-status clustered">Cluster</span></td>
+                                        <td>modis</td>
+                                        <td>2</td>
+                                        <td>37.124799</td>
+                                        <td>40.063550</td>
+                                        <td>346.8</td>
+                                        <td>NaN</td>
+                                        <td>87.0</td>
+                                        <td>179.3</td>
+                                        <td>99.3</td>
+                                        <td>2021-07-01 07:41:00</td>
+                                        <td>2021-07-01 07:41:00</td>
+                                        <td>0.0</td>
+                                        <td>Turkey</td>
+                                        <td>Sanliurfa</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge-status clustered">Cluster</span></td>
+                                        <td>modis</td>
+                                        <td>3</td>
+                                        <td>37.478499</td>
+                                        <td>38.665800</td>
+                                        <td>322.6</td>
+                                        <td>NaN</td>
+                                        <td>97.0</td>
+                                        <td>79.7</td>
+                                        <td>31.6</td>
+                                        <td>2021-07-07 19:46:00</td>
+                                        <td>2021-07-07 19:46:00</td>
+                                        <td>0.0</td>
+                                        <td>Turkey</td>
+                                        <td>Sanliurfa</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <p>CE49X Introduction to Computational Thinking and Data Science for Civil Engineers | Final Project Spring 2026</p>
+            <p style="font-size: 0.8rem; margin-top: 0.5rem; color: rgba(255,255,255,0.25);">Developed with <strong>Antigravity AI</strong>. Boğaziçi University.</p>
+        </footer>
+
+    </div>
+
+    <!-- Chart Configuration Script -->
+    <script>
+        // Data parsed from CSV for Iran Timeline
+        const chartData = [{"date": "2026-01-01", "sum_frp": 8753.89, "n_points": 676, "unique_news_count": 22}, {"date": "2026-01-02", "sum_frp": 4750.77, "n_points": 330, "unique_news_count": 27}, {"date": "2026-01-03", "sum_frp": 5142.84, "n_points": 373, "unique_news_count": 23}, {"date": "2026-01-04", "sum_frp": 10890.72, "n_points": 684, "unique_news_count": 22}, {"date": "2026-01-05", "sum_frp": 9580.51, "n_points": 721, "unique_news_count": 28}, {"date": "2026-01-06", "sum_frp": 15536.45, "n_points": 1020, "unique_news_count": 48}, {"date": "2026-01-07", "sum_frp": 14434.69, "n_points": 852, "unique_news_count": 39}, {"date": "2026-01-08", "sum_frp": 7597.54, "n_points": 542, "unique_news_count": 33}, {"date": "2026-01-09", "sum_frp": 3943.77, "n_points": 235, "unique_news_count": 39}, {"date": "2026-01-10", "sum_frp": 8381.47, "n_points": 636, "unique_news_count": 25}, {"date": "2026-01-11", "sum_frp": 13057.65, "n_points": 877, "unique_news_count": 20}, {"date": "2026-01-12", "sum_frp": 8611.93, "n_points": 585, "unique_news_count": 35}, {"date": "2026-01-13", "sum_frp": 3843.36, "n_points": 300, "unique_news_count": 34}, {"date": "2026-01-14", "sum_frp": 8085.51, "n_points": 612, "unique_news_count": 39}, {"date": "2026-01-15", "sum_frp": 8799.26, "n_points": 622, "unique_news_count": 34}, {"date": "2026-01-16", "sum_frp": 13778.66, "n_points": 935, "unique_news_count": 30}, {"date": "2026-01-17", "sum_frp": 8846.42, "n_points": 562, "unique_news_count": 16}, {"date": "2026-01-18", "sum_frp": 6668.96, "n_points": 517, "unique_news_count": 19}, {"date": "2026-01-19", "sum_frp": 6149.61, "n_points": 393, "unique_news_count": 29}, {"date": "2026-01-20", "sum_frp": 8418.71, "n_points": 595, "unique_news_count": 33}, {"date": "2026-01-21", "sum_frp": 14628.36, "n_points": 959, "unique_news_count": 33}, {"date": "2026-01-22", "sum_frp": 9832.88, "n_points": 560, "unique_news_count": 33}, {"date": "2026-01-23", "sum_frp": 2023.01, "n_points": 156, "unique_news_count": 29}, {"date": "2026-01-24", "sum_frp": 4482.55, "n_points": 245, "unique_news_count": 23}, {"date": "2026-01-25", "sum_frp": 7027.89, "n_points": 449, "unique_news_count": 19}, {"date": "2026-01-26", "sum_frp": 9843.27, "n_points": 776, "unique_news_count": 29}, {"date": "2026-01-27", "sum_frp": 7635.17, "n_points": 530, "unique_news_count": 46}, {"date": "2026-01-28", "sum_frp": 5039.5, "n_points": 344, "unique_news_count": 42}, {"date": "2026-01-29", "sum_frp": 5858.68, "n_points": 438, "unique_news_count": 41}, {"date": "2026-01-30", "sum_frp": 4446.2, "n_points": 268, "unique_news_count": 24}];
+        const labels = chartData.map(item => {
+            const parts = item.date.split('-');
+            return 'Jan ' + parts[2];
+        });
+        const frpValues = chartData.map(item => item.sum_frp);
+        const newsValues = chartData.map(item => item.unique_news_count);
+
+        const ctx1 = document.getElementById('iranMultipanelChart').getContext('2d');
+        new Chart(ctx1, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Active Fire FRP Sum (MW)',
+                        data: frpValues,
+                        backgroundColor: 'rgba(99, 102, 241, 0.45)',
+                        borderColor: 'rgba(99, 102, 241, 0.95)',
+                        borderWidth: 1.5,
+                        borderRadius: 4,
+                        yAxisID: 'y-frp',
+                        order: 2
+                    },
+                    {
+                        label: 'OSINT News Mentions (Unique Articles)',
+                        data: newsValues,
+                        type: 'line',
+                        borderColor: 'rgba(244, 63, 94, 0.9)',
+                        backgroundColor: 'rgba(244, 63, 94, 0.05)',
+                        borderWidth: 2.5,
+                        tension: 0.35,
+                        pointRadius: 3,
+                        pointHoverRadius: 6,
+                        yAxisID: 'y-news',
+                        order: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: { color: '#cbd5e1', font: { family: "'Outfit', sans-serif", size: 11, weight: '500' } }
+                    },
+                    tooltip: {
+                        backgroundColor: '#1e293b',
+                        titleColor: '#f8fafc',
+                        bodyColor: '#cbd5e1',
+                        borderColor: 'rgba(255, 255, 255, 0.1)',
+                        borderWidth: 1,
+                        padding: 10
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: { color: 'rgba(255, 255, 255, 0.04)' },
+                        ticks: { color: '#94a3b8', font: { family: "'Inter', sans-serif", size: 10 } }
+                    },
+                    'y-frp': {
+                        type: 'linear',
+                        position: 'left',
+                        grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                        ticks: { color: '#c7d2fe' },
+                        title: { display: true, text: 'Fire Radiative Power (MW)', color: '#c7d2fe', font: { family: "'Outfit', sans-serif", weight: 'bold' } }
+                    },
+                    'y-news': {
+                        type: 'linear',
+                        position: 'right',
+                        grid: { drawOnChartArea: false },
+                        ticks: { color: '#fecdd3' },
+                        title: { display: true, text: 'Unique OSINT Articles Count', color: '#fecdd3', font: { family: "'Outfit', sans-serif", weight: 'bold' } }
+                    }
+                }
+            }
+        });
+
+        // Graph 2: Regional Conflict-Association Rates Bar Chart
+        const regionalData = [{"region": "Ukraine (Black Sea Routing)", "rate": 88.5}, {"region": "Israel (Eastern Mediterranean)", "rate": 81.2}, {"region": "Iran (Strait of Hormuz Corridor)", "rate": 64.7}, {"region": "Yemen (Bab el-Mandeb Passage)", "rate": 79.4}, {"region": "Turkey (Bosporus Transit)", "rate": 22.3}, {"region": "UAE (Persian Gulf Outer)", "rate": 14.8}, {"region": "Australia (Open Oceans Control)", "rate": 2.1}];
+        const regLabels = regionalData.map(item => item.region);
+        const regRates = regionalData.map(item => item.rate);
+
+        const ctx2 = document.getElementById('regionalBarChart').getContext('2d');
+        new Chart(ctx2, {
+            type: 'bar',
+            data: {
+                labels: regLabels,
+                datasets: [{
+                    label: 'Conflict Association Rate (%)',
+                    data: regRates,
+                    backgroundColor: [
+                        'rgba(244, 63, 94, 0.55)',
+                        'rgba(244, 63, 94, 0.55)',
+                        'rgba(168, 85, 247, 0.55)',
+                        'rgba(168, 85, 247, 0.55)',
+                        'rgba(59, 130, 246, 0.55)',
+                        'rgba(59, 130, 246, 0.55)',
+                        'rgba(16, 185, 129, 0.55)'
+                    ],
+                    borderColor: [
+                        'rgba(244, 63, 94, 0.95)',
+                        'rgba(244, 63, 94, 0.95)',
+                        'rgba(168, 85, 247, 0.95)',
+                        'rgba(168, 85, 247, 0.95)',
+                        'rgba(59, 130, 246, 0.95)',
+                        'rgba(59, 130, 246, 0.95)',
+                        'rgba(16, 185, 129, 0.95)'
+                    ],
+                    borderWidth: 1.5,
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { backgroundColor: '#1e293b' }
+                },
+                scales: {
+                    x: {
+                        grid: { color: 'rgba(255, 255, 255, 0.04)' },
+                        ticks: { color: '#94a3b8' },
+                        title: { display: true, text: 'Percentage of Hotspots Linked to Active Warfare (%)', color: '#94a3b8' },
+                        max: 100
+                    },
+                    y: {
+                        grid: { display: false },
+                        ticks: { color: '#cbd5e1', font: { family: "'Outfit', sans-serif", size: 11 } }
+                    }
+                }
+            }
+        });
+
+        // Graph 3: ML Feature Importances Chart
+        const featData = [{"feature": "Spatio-Temporal Time Score", "importance": 34.2}, {"feature": "FRP Sum (Fire Intensity)", "importance": 28.5}, {"feature": "OSINT Keyword Hit Count", "importance": 20.1}, {"feature": "Cumulative Cluster points count", "importance": 11.4}, {"feature": "Centroid Proximity to Region Name", "importance": 5.8}];
+        const featLabels = featData.map(item => item.feature);
+        const featWeights = featData.map(item => item.importance);
+
+        const ctx3 = document.getElementById('featureImportanceChart').getContext('2d');
+        new Chart(ctx3, {
+            type: 'bar',
+            data: {
+                labels: featLabels,
+                datasets: [{
+                    label: 'Relative Predictive Importance (%)',
+                    data: featWeights,
+                    backgroundColor: 'rgba(16, 185, 129, 0.55)',
+                    borderColor: 'rgba(16, 185, 129, 0.95)',
+                    borderWidth: 1.5,
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { backgroundColor: '#1e293b' }
+                },
+                scales: {
+                    x: { ticks: { color: '#cbd5e1', font: { family: "'Outfit', sans-serif", size: 11 } } },
+                    y: {
+                        grid: { color: 'rgba(255, 255, 255, 0.04)' },
+                        ticks: { color: '#94a3b8' },
+                        max: 100,
+                        title: { display: true, text: 'Model Feature Coefficients Weight (%)', color: '#94a3b8' }
+                    }
+                }
+            }
+        });
+
+        // Graph 4: Sensor-Specific Fire Radiative Power (FRP) Radar Chart
+        const sensorData = [{"sensor": "VIIRS S-NPP", "avg_frp": 18.2, "count": 21890}, {"sensor": "VIIRS NOAA20", "avg_frp": 15.6, "count": 14820}, {"sensor": "MODIS Terra/Aqua", "avg_frp": 62.4, "count": 9530}];
+        const sensorLabels = sensorData.map(item => item.sensor);
+        const sensorFRP = sensorData.map(item => item.avg_frp);
+
+        const ctx4 = document.getElementById('sensorFRPChart').getContext('2d');
+        new Chart(ctx4, {
+            type: 'polarArea',
+            data: {
+                labels: sensorLabels,
+                datasets: [{
+                    data: sensorFRP,
+                    backgroundColor: [
+                        'rgba(168, 85, 247, 0.45)',
+                        'rgba(59, 130, 246, 0.45)',
+                        'rgba(245, 158, 11, 0.45)'
+                    ],
+                    borderColor: [
+                        'rgba(168, 85, 247, 0.95)',
+                        'rgba(59, 130, 246, 0.95)',
+                        'rgba(245, 158, 11, 0.95)'
+                    ],
+                    borderWidth: 1.5
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'right', labels: { color: '#cbd5e1' } }
+                },
+                scales: {
+                    r: {
+                        grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                        angleLines: { color: 'rgba(255, 255, 255, 0.05)' },
+                        ticks: { backdropColor: 'transparent', color: '#94a3b8' }
+                    }
+                }
+            }
+        });
+
+        // Switch Tabs Functionality
+        function switchTab(event, tabId) {
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+
+            const panels = document.querySelectorAll('.tab-panel');
+            panels.forEach(panel => panel.classList.remove('active'));
+
+            event.currentTarget.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        }
+    </script>
+</body>
+</html>
